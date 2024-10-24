@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -77,6 +79,7 @@ public class ProductoController {
         return "menu";
     }
     
+    
     @PostMapping("/agregar_producto")
     public String agregarProducto(HttpSession sesion, @RequestParam("prodId")String prodId,
     		@RequestParam("cant") String cant) {
@@ -131,5 +134,61 @@ public class ProductoController {
     			.contentType(MediaType.APPLICATION_PDF)
     			.body(new InputStreamResource(pdfBytes));
     }
-  
+    
+    // Métodos CRUD
+
+    // Método para mostrar la lista de productos
+ // Método para mostrar la lista de productos
+    @GetMapping("/lista_productos")
+    public String listaProductos(Model model, HttpSession session) {
+        if (session.getAttribute("usuario") == null) {
+            return "redirect:/";
+        }
+        
+        List<ProductoEntity> listaProductos = productoService.buscarTodosProductos();
+        model.addAttribute("productos", listaProductos);
+        return "lista_productos"; // Nombre de la vista para la lista de productos
+    }
+
+    // Método para mostrar el formulario de crear producto
+    @GetMapping("/crear_producto")
+    public String crearProducto(Model model, HttpSession session) {
+        if (session.getAttribute("usuario") == null) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("producto", new ProductoEntity()); // Pasar un nuevo objeto producto
+        return "crear_producto"; // Nombre de la vista para crear un producto
+    }
+
+    // Método para manejar el envío del formulario de creación de producto
+    @PostMapping("/guardar_producto")
+    public String guardarProducto(@ModelAttribute ProductoEntity producto, HttpSession session) {
+        if (session.getAttribute("usuario") == null) {
+            return "redirect:/";
+        }
+
+        productoService.crear(producto); // Método para guardar el producto
+        return "redirect:/lista_productos"; // Redirigir a la lista de productos después de guardar
+    }
+    
+    @GetMapping("/editar/{id}")
+    public String mostrarFormularioEditar(@PathVariable Integer id, Model model) {
+        ProductoEntity producto = productoService.buscarProductoPorId(id);
+        model.addAttribute("producto", producto);
+        return "productos/editar"; // Verificar que este archivo HTML existe
+    }
+
+    @PostMapping("/actualizar/{id}")
+    public String actualizarProducto(@PathVariable Integer id, @ModelAttribute ProductoEntity producto) {
+        productoService.actualizar(id, producto);
+        return "redirect:/productos/listar";
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminarProducto(@PathVariable Integer id) {
+        productoService.eliminar(id);
+        return "redirect:/productos/listar";
+    }
+
 }

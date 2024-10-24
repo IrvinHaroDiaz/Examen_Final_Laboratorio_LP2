@@ -13,44 +13,39 @@ import pe.com.cibertec.service.ProductoService;
 @Service
 @RequiredArgsConstructor
 public class ProductoServiceImpl implements ProductoService {
-	
-	private final ProductoRepository productoRepository;
+    
+    private final ProductoRepository productoRepository;
 
-	@Override
-	public List<ProductoEntity> buscarTodosProductos() {
-		// TODO Auto-generated method stub
-		return productoRepository.findAll();
-	}
+    @Override
+    public List<ProductoEntity> buscarTodosProductos() {
+        return productoRepository.findAll();
+    }
 
-	@Override
-	public ProductoEntity buscarProductoPorId(Integer id) {
-		// TODO Auto-generated method stub
-		Optional<ProductoEntity> producto = productoRepository.findById(id);
-		return producto.orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-	}
+    @Override
+    public ProductoEntity buscarProductoPorId(Integer id) {
+        Optional<ProductoEntity> producto = productoRepository.findById(id);
+        return producto.orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+    }
 
-	@Override
-	public ProductoEntity crear(ProductoEntity producto) {
-		// TODO Auto-generated method stub
-		return productoRepository.save(producto);
-	}
+    @Override
+    public ProductoEntity crear(ProductoEntity producto) {
+        return productoRepository.save(producto);
+    }
 
-	@Override
-	public ProductoEntity actualizar(Integer id, ProductoEntity producto) {
-		// TODO Auto-generated method stub
-		if (!productoRepository.existsById(id)) {
-			throw new RuntimeException("Producto no encontrado");
-		}
-		producto.setProductoId(id); // Asegúrate de que el ID esté establecido
-		return productoRepository.save(producto);
-	}
+    @Override
+    public ProductoEntity actualizar(Integer id, ProductoEntity producto) {
+        if (!productoRepository.existsById(id)) {
+            throw new RuntimeException("Producto no encontrado");
+        }
+        producto.setProductoId(id); 
+        return productoRepository.save(producto);
+    }
 
-	@Override
-	public void eliminar(Integer id) {
-		// TODO Auto-generated method stub
-		if (!productoRepository.existsById(id)) {
-			throw new RuntimeException("Producto no encontrado");
-		}
-		productoRepository.deleteById(id);
-	}
+    @Override
+    public void eliminar(Integer id) {
+        if (!productoRepository.existsById(id)) {
+            throw new RuntimeException("Producto no encontrado");
+        }
+        productoRepository.deleteById(id);
+    }
 }

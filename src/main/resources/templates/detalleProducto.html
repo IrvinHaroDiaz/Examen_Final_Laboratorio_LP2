@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Detalle del Producto</title>
+    <style>
+        .form-container {
+            width: 500px;
+            margin: 100px auto;
+            padding: 20px;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .form-container h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container shadow-lg p-4">
+            <h3>Detalle del Producto</h3>
+            <p><strong>ID:</strong> <span th:text="${producto.id}"></span></p>
+            <p><strong>Nombre:</strong> <span th:text="${producto.nombre}"></span></p>
+            <p><strong>Precio:</strong> $<span th:text="${producto.precio}"></span></p>
+            <p><strong>Descripción:</strong></p>
+            <p th:text="${producto.descripcion}"></p>
+            <div class="d-flex justify-content-between mt-4">
+                <a class="btn btn-secondary" href="/lista_productos">Volver a la lista</a>
+                <a th:href="@{/editar_producto/{id}(id=${producto.id})}" class="btn btn-warning">Editar</a>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
