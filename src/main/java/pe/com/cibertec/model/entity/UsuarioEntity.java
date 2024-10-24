@@ -32,6 +32,8 @@ public class UsuarioEntity {
 	
 	@Column(name ="url_imagen" )
 	private String urlImagen;
+
+
 	
 
 }
